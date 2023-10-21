@@ -109,7 +109,7 @@ colors = {'RUMAH SAKIT UMUM': '#1f77b4', 'RUMAH SAKIT KHUSUS': '#ff7f0e', 'RUMAH
 
 # Sidebar for data selection
 st.sidebar.header('Pilihan Data')
-selected_data = st.sidebar.multiselect('Pilih Jenis Fasilitas Kesehatan', df['jenis_faskes'].unique(), [])
+selected_data = st.sidebar.multiselect('Bar Chart:', df['jenis_faskes'].unique(), [])
 
 # Filter data based on user selection
 if not selected_data:
