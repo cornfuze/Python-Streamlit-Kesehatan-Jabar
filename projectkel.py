@@ -4,6 +4,17 @@ from matplotlib.patches import Patch
 import numpy as np
 import pandas as pd
 
+st.markdown(
+    """
+    <style>
+    .centered {
+        text-align: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.title("Tugas Kelompok Python")
 
 st.write("""
@@ -22,6 +33,9 @@ st.text("")
 # Load data from Excel
 excel_file = "Jaminan Kesehatan Jabar.xlsx"
 df = pd.read_excel(excel_file)
+
+
+st.markdown("<h2 class='centered'>Proporsi Jaminan Kesehatan</h2>", unsafe_allow_html=True)
 
 # Create a sidebar to select data
 st.sidebar.header('Sidebar Data Selection')
@@ -107,6 +121,9 @@ st.text("")
 colors = {'RUMAH SAKIT UMUM': '#1f77b4', 'RUMAH SAKIT KHUSUS': '#ff7f0e', 'RUMAH SAKIT BERSALIN': '#2ca02c',
           'PUSKESMAS': '#d62728', 'POSYANDU': '#1f77b4'}  # POSYANDU will be blue
 
+
+st.markdown("<h2 class='centered'>Jumlah Fasilitas Kesehatan</h2>", unsafe_allow_html=True)
+
 # Sidebar for data selection
 st.sidebar.header('Pilihan Data')
 selected_data = st.sidebar.multiselect('Bar Chart:', df['jenis_faskes'].unique(), [])
@@ -139,5 +156,73 @@ legend = ax.legend(handles=legend_handles, loc='upper left', bbox_to_anchor=(1, 
 legend.set_title("Legenda")
 
 # Show the bar chart in the main content area
+st.pyplot(fig)
+
+# Load data
+df_kesehatan = pd.read_excel("Jaminan Kesehatan Jabar.xlsx")
+df_faskes = pd.read_excel("Jumlah Faskes Jabar.xlsx")
+
+st.text("")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric(
+        label="Jumlah Kabupaten/Kota",
+        value=df_kesehatan['nama_kabupaten_kota'].nunique(),
+)
+
+with col2:
+    st.metric(
+        label="Jumlah Penduduk Terdaftar",
+        value=df_kesehatan['jumlah_penduduk'].sum(),
+)
+
+with col3:
+    st.metric(
+        label="Jumlah Faskes",
+        value=df_faskes['jumlah_faskes'].sum(),
+)
+
+st.text("")
+st.text("")
+# Load data from Excel
+df_faskes = pd.read_excel("Jumlah Faskes Jabar.xlsx")
+
+df_faskes = df_faskes.drop_duplicates(subset=['nama_kabupaten_kota', 'jenis_faskes'])
+
+# Pivot the data to create a DataFrame suitable for a stacked bar chart
+pivot_df = df_faskes.pivot(index='nama_kabupaten_kota', columns='jenis_faskes', values='jumlah_faskes')
+
+# Fill missing values with 0
+pivot_df.fillna(0, inplace=True)
+
+# Create a stacked bar chart
+st.markdown("<h2 class='centered'>Distribusi Fasilitas Kesehatan</h2>", unsafe_allow_html=True)
+
+fig, ax = plt.subplots(figsize=(10, 6))
+pivot_df.plot(kind='bar', stacked=True, ax=ax)
+ax.set_xlabel("Nama Kabupaten/Kota")
+plt.xticks(rotation=45, ha='right')
+
+st.pyplot(fig)
+
+st.text("")
+st.text("")
+
+st.markdown("<h2 class='centered'>Jumlah Penduduk Terdaftar Jaminan Kesehatan</h2>", unsafe_allow_html=True)
+
+st.text("")
+
+# Load data
+df_kesehatan = pd.read_excel("Jaminan Kesehatan Jabar.xlsx")
+
+# Create a bar chart for the number of registered population in each kabupaten
+fig, ax = plt.subplots(figsize=(10, 6))
+df_kesehatan = df_kesehatan.sort_values(by='jumlah_penduduk', ascending=False)
+
+bars = ax.barh(df_kesehatan['nama_kabupaten_kota'], df_kesehatan['jumlah_penduduk'], color='skyblue')
+
+# Show the bar chart in Streamlit
 st.pyplot(fig)
 
