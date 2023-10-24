@@ -1,7 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
-import numpy as np
 import pandas as pd
 
 st.markdown(
@@ -30,10 +29,10 @@ st.write("""
          """, unsafe_allow_html=True)
 
 st.text("")
+
 # Load data from Excel
 excel_file = "Jaminan Kesehatan Jabar.xlsx"
 df = pd.read_excel(excel_file)
-
 
 st.markdown("<h2 class='centered'>Proporsi Jaminan Kesehatan</h2>", unsafe_allow_html=True)
 
@@ -43,7 +42,7 @@ selected_data = st.sidebar.multiselect('Pie Chart:', df['jaminan_kesehatan'].uni
 
 # Check if no selection is made, and if not, use all data
 if not selected_data:
-    filtered_data = df
+    filtered_data = df 
 else:
     # Filter the data based on the selected data
     filtered_data = df[df['jaminan_kesehatan'].isin(selected_data)]
@@ -69,9 +68,6 @@ ax.set_title('Proporsi Jaminan Kesehatan terhadap Jumlah Penduduk')
 
 # Add custom labels outside of the pie chart
 labels_out = [f"{category}: {(population/sum(grouped)*100):.1f}%" for category, population in zip(grouped.index, grouped)]
-# Load data from Excel
-excel_file = "Jumlah Faskes Jabar.xlsx"
-df = pd.read_excel(excel_file)
 
 plt.legend(wedges, labels_out, title="Jaminan Kesehatan", loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
 
@@ -81,16 +77,20 @@ plt.setp(autotexts, size=14)
 # Show the pie chart in the main content area
 st.pyplot(fig)
 
-st.text("")
-st.text("")
 
-spacer = st.empty()
+
+# Load data from Excel
+excel_file = "Jumlah Faskes Jabar.xlsx"
+df = pd.read_excel(excel_file)
+
+st.text("")
+st.text("")
 
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     st.metric(
-        label="Posyanadu",
+        label="Posyandu",
         value=df[df['jenis_faskes'] == 'POSYANDU']['jumlah_faskes'].sum(),
     )
 with col2:
@@ -119,13 +119,11 @@ st.text("")
 
 # Define colors for each jenis_faskes
 colors = {'RUMAH SAKIT UMUM': '#1f77b4', 'RUMAH SAKIT KHUSUS': '#ff7f0e', 'RUMAH SAKIT BERSALIN': '#2ca02c',
-          'PUSKESMAS': '#d62728', 'POSYANDU': '#1f77b4'}  # POSYANDU will be blue
-
+          'PUSKESMAS': '#d62728', 'POSYANDU': '#8f14b8'}
 
 st.markdown("<h2 class='centered'>Jumlah Fasilitas Kesehatan</h2>", unsafe_allow_html=True)
 
 # Sidebar for data selection
-st.sidebar.header('Pilihan Data')
 selected_data = st.sidebar.multiselect('Bar Chart:', df['jenis_faskes'].unique(), [])
 
 # Filter data based on user selection
@@ -186,9 +184,8 @@ with col3:
 
 st.text("")
 st.text("")
-# Load data from Excel
-df_faskes = pd.read_excel("Jumlah Faskes Jabar.xlsx")
 
+# menghapus data duplikat berdasarkan kolom 'nama_kabupaten_kota' dan 'jenis_faskes'
 df_faskes = df_faskes.drop_duplicates(subset=['nama_kabupaten_kota', 'jenis_faskes'])
 
 # Pivot the data to create a DataFrame suitable for a stacked bar chart
@@ -200,6 +197,7 @@ pivot_df.fillna(0, inplace=True)
 # Create a stacked bar chart
 st.markdown("<h2 class='centered'>Distribusi Fasilitas Kesehatan</h2>", unsafe_allow_html=True)
 
+# Create a stacked bar chart
 fig, ax = plt.subplots(figsize=(10, 6))
 pivot_df.plot(kind='bar', stacked=True, ax=ax)
 ax.set_xlabel("Nama Kabupaten/Kota")
@@ -213,9 +211,6 @@ st.text("")
 st.markdown("<h2 class='centered'>Jumlah Penduduk Terdaftar Jaminan Kesehatan</h2>", unsafe_allow_html=True)
 
 st.text("")
-
-# Load data
-df_kesehatan = pd.read_excel("Jaminan Kesehatan Jabar.xlsx")
 
 # Create a bar chart for the number of registered population in each kabupaten
 fig, ax = plt.subplots(figsize=(10, 6))
