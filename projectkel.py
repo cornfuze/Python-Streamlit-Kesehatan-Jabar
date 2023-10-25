@@ -15,12 +15,10 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("Tugas Kelompok Python")
-
 st.write("""
-         # Dashboard Kelompok Sampurasun
+         # Python Kelompok Sampurasun
 
-         **Nama Kelompok:**
+         **Nama Anggota :**
          - Andreas Rhemadanu        <span style="float:right;">210103088</span>
          - Muhammad Hafid Krisna    <span style="float:right;">210103106</span>
          - Muhammad Yusuf           <span style="float:right;">210103110</span>
@@ -28,6 +26,8 @@ st.write("""
 
          ## Dashboard Jaminan Kesehatan di Provinsi Jawa Barat.
          """, unsafe_allow_html=True)
+
+st.markdown("---")
 
 st.text("")
 # Function to display the Home page
