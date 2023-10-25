@@ -227,12 +227,12 @@ def show_home_page():
 # Function to display the Excel data page
 def show_excel_data():
     st.title("Data Jaminan Kesehatan Di Jawa Barat")
-    excel_file = "Jaminan Kesehatan Jabar.xlsx"  # Ganti dengan nama file Excel yang sesuai
+    excel_file = "Jaminan Kesehatan Jabar.xlsx" 
     df = pd.read_excel(excel_file)
     st.write(df)
 
     st.title("Data  Fasilitas Kesehatan di Jawa Barat")
-    excel_file = "Jumlah Faskes Jabar.xlsx"  # Ganti dengan nama file Excel yang sesuai
+    excel_file = "Jumlah Faskes Jabar.xlsx" 
     df = pd.read_excel(excel_file)
     st.write(df)
    
