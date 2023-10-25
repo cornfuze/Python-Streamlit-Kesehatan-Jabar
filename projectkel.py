@@ -3,6 +3,7 @@ from streamlit_option_menu import option_menu
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 import pandas as pd
+import plotly.express as px
 
 st.markdown(
     """
@@ -200,13 +201,16 @@ def show_home_page():
     # Create a stacked bar chart
     st.markdown("<h2 class='centered'>Distribusi Fasilitas Kesehatan</h2>", unsafe_allow_html=True)
 
-    # Create a stacked bar chart
-    fig, ax = plt.subplots(figsize=(10, 6))
-    pivot_df.plot(kind='bar', stacked=True, ax=ax)
-    ax.set_xlabel("Nama Kabupaten/Kota")
-    plt.xticks(rotation=45, ha='right')
+    # Create an interactive stacked bar chart using Plotly Express
+    fig = px.bar(pivot_df, x=pivot_df.index, y=pivot_df.columns, title="Distribusi Fasilitas Kesehatan", 
+                labels={'index': "Nama Kabupaten/Kota", 'value': 'Jumlah Fasilitas Kesehatan'}, 
+                hover_name=pivot_df.index)
 
-    st.pyplot(fig)
+    # Configure the layout for better readability
+    fig.update_layout(barmode='stack', xaxis_tickangle=-45, xaxis_title="Nama Kabupaten/Kota", yaxis_title="Jumlah Fasilitas Kesehatan")
+
+    # Display the interactive chart using Streamlit
+    st.plotly_chart(fig)
 
     st.text("")
     st.text("")
